@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './App.scss'
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, Switch } from 'react-router-dom'
 
 import AuthenticatedRoute from './auth/components/AuthenticatedRoute'
 import Header from './header/Header'
@@ -8,6 +8,13 @@ import SignUp from './auth/components/SignUp'
 import SignIn from './auth/components/SignIn'
 import SignOut from './auth/components/SignOut'
 import ChangePassword from './auth/components/ChangePassword'
+
+import TripIndex from './trips/components/TripIndex.js'
+import TripNew from './trips/components/TripNew.js'
+import TripShow from './trips/components/TripShow.js'
+import TripEdit from './trips/components/TripEdit.js'
+import TripCreate from './trips/components/TripCreate.js'
+import TripUpdate from './trips/components/TripUpdate.js'
 
 class App extends Component {
   constructor () {
@@ -40,7 +47,7 @@ class App extends Component {
       <React.Fragment>
         <Header user={user} />
         {flashMessage && <h3 className={flashType}>{flashMessage}</h3>}
-        
+
         <main className="container">
           <Route path='/sign-up' render={() => (
             <SignUp flash={this.flash} setUser={this.setUser} />
@@ -55,6 +62,27 @@ class App extends Component {
             <ChangePassword flash={this.flash} user={user} />
           )} />
         </main>
+
+        <Switch>
+          <Route exact path="/trips" render={()=>(
+            <TripIndex user={user} />
+          )} />
+          <Route exact path="/trips/new" render={()=>(
+            <TripNew user={user} />
+          )}/>
+          <Route exact path="/trips/create" render={()=>(
+            <TripCreate user={user} />
+          )} />
+          <Route exact path="/trips/:id" render={()=>(
+            <TripShow user={user} />
+          )} />
+          <Route exact path="/trips/:id/edit" render={()=>(
+            <TripEdit user={user} />
+          )} />
+          <Route exact path="/trips/:id/update" render={()=>(
+            <TripUpdate user={user} />
+          )} />
+        </Switch>
       </React.Fragment>
     )
   }

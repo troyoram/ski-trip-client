@@ -1,4 +1,6 @@
-const apiUrl = 'http://localhost:4741'
+// TODO: fix the apiUrl to be dynamic
+import apiUrl from '../apiConfig.js'
+// const apiUrl = 'http://localhost:4741'
 
 export const handleErrors = res => {
   if (res.ok) {
