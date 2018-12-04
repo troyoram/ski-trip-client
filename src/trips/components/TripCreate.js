@@ -67,7 +67,7 @@ class TripCreate extends React.Component {
 
     return (
       <React.Fragment>
-        <h1>Trip Create</h1>
+        <h2>Trip Create:</h2>
         <p>{this.state.flashMessage}</p>
         <form>
           <input type='text' onChange={this.handleChange} value={this.state.trip.location} name='location' placeholder='location'/>

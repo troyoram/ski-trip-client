@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
 import apiUrl from '../../apiConfig.js'
+import { Table, Button } from 'react-bootstrap'
 
 class TripShow extends React.Component {
 
@@ -17,42 +18,43 @@ class TripShow extends React.Component {
   }
 
   async componentDidMount(){
+    const user = this.props.user
     const id = this.props.match.params.id
-    const response = await axios.get(`${apiUrl}/trips/${id}`)
-    console.log(response)
+    const response = await axios({
+      method: 'get',
+      url: `${apiUrl}/trips/${id}`,
+      headers: {
+        'Authorization': `Token token=${user.token}`
+      }
+    })
     const trip = response.data.trip
     this.setState({
       trip: trip
     })
   }
 
-  // async componentDidMount(event){
-  //   // event.preventDefault()
-  //   const user = this.props.user
-  //   // console.log(user)
-  //   const trip = this.state.trip
-  //   const id = this.props.match.params.id
-  //   const response = await axios({
-  //     method: 'get',
-  //     url: `${apiUrl}/trips/${id}`,
-  //     headers: {
-  //       'Authorization': `Token token=${user.token}`
-  //     },
-  //     data: {
-  //       trip: trip
-  //     }
-  //   })
-  //
-  //   this.props.history.push('/trips')
-  // }
-
   render() {
     return (
       <React.Fragment>
-        <h1>Trip:</h1>
-        <p>{this.state.trip.location}</p>
-        <p>{this.state.trip.date}</p>
-        <p>{this.state.trip.equipment}</p>
+        <h2>Trip:</h2>
+        <Table striped bordered condensed hover>
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Location</th>
+              <th>Date</th>
+              <th>Equipment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{this.state.trip.id}</td>
+              <td>{this.state.trip.location}</td>
+              <td>{this.state.trip.date}</td>
+              <td>{this.state.trip.equipment}</td>
+            </tr>
+          </tbody>
+        </Table>
       </React.Fragment>
     )
   }

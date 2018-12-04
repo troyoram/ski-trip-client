@@ -2,30 +2,30 @@ import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import axios from 'axios'
 import apiUrl from '../../apiConfig.js'
+import { Table, Button } from 'react-bootstrap'
 
 class TripIndex extends React.Component {
 
   constructor (props) {
     super(props)
     this.state = {trips: []}
-    // console.log('this is TripIndex constructor')
-    // console.log('this is apiUrl ' + apiUrl)
   }
 
-  async componentDidMount(){
-    // console.log('this is componentDidMount')
-    // const response = await axios.get('http://localhost:4741/trips')
-    const response = await axios.get(`${apiUrl}/trips`)
+  async componentDidMount(event){
+    const user = this.props.user
+    const response = await axios({
+      method: 'get',
+      url: `${apiUrl}/trips/`,
+      headers: {
+        'Authorization': `Token token=${user.token}`
+      }
+    })
     this.setState({trips: response.data.trips})
   }
 
   async handleDelete (event, id) {
     event.preventDefault()
-    console.log('this is handleDelete(id) ' + id)
     const user = this.props.user
-
-    // const response = await axios.delete(`${apiUrl}/trips/${id}`)
-
     const response = await axios({
       method: 'delete',
       url: `${apiUrl}/trips/${id}`,
@@ -33,14 +33,11 @@ class TripIndex extends React.Component {
         'Authorization': `Token token=${user.token}`
       }
     })
-
-    console.log('this is handleDelete response ' + response)
     const updatedTripList = this.state.trips.filter(trip => trip.id !== id)
     this.setState({trips: updatedTripList})
   }
 
   render() {
-    // console.log('this is TripIndex render')
     const tripRows = this.state.trips.map(trip => {
       const {id, location, date, equipment} = trip
 
@@ -56,12 +53,9 @@ class TripIndex extends React.Component {
             <Link to={`/trips/${id}/edit`}>Edit</Link>
           </td>
           <td>
-            <Link to={`/trips/${id}/update`}>Update</Link>
-          </td>
-          <td>
-            <button onClick={(event) => {
+            <Button bsStyle="warning" onClick={(event) => {
               return this.handleDelete(event, id)
-            }}>Delete</button>
+            }}>Delete</Button>
           </td>
         </tr>
       )
@@ -69,14 +63,21 @@ class TripIndex extends React.Component {
 
     return (
       <React.Fragment>
-        <h1>Trip Index</h1>
+        <h2>Trip Index:</h2>
         <Link to="/trips/new">Add a Trip</Link>
-        <Link to="/trips/create">Create a Trip</Link>
-        <table>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Location</th>
+              <th>Date</th>
+              <th>Equipment</th>
+            </tr>
+          </thead>
           <tbody>
             {tripRows}
           </tbody>
-        </table>
+        </Table>
       </React.Fragment>
     )
   }

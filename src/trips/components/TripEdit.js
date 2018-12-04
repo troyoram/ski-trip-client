@@ -15,41 +15,19 @@ class TripEdit extends React.Component {
       },
       flashMessage: ''
     }
-
     this.baseTrip = this.state.trip
   }
 
   handleChange = (event) => {
-    // const name = event.target.name
-    // const value = event.target.value
-    // // make copy of trip object
-    // const newTrip = Object.assign(this.state.trip)
-    // newTrip[name]=value
-
-    // ES6 below replaces the above code
     const newTrip = { ...this.state.trip, [event.target.name]: event.target.value }
-
     this.setState({
       trip: newTrip
     })
   }
 
-  // handleSubmit = async (event) => {
-  //   event.preventDefault()
-  //   const trip = this.state.trip
-  //   const id = this.props.match.params.id
-  //   const response = await axios.put(`${apiUrl}/trips/${id}`, {
-  //     trip: trip
-  //   })
-  //
-  //   this.props.history.push('/trips')
-  //   console.log(response)
-  // }
-
   handleSubmit = async (event) => {
     event.preventDefault()
     const user = this.props.user
-    // console.log(user)
     const trip = this.state.trip
     const id = this.props.match.params.id
     const response = await axios({
@@ -62,14 +40,19 @@ class TripEdit extends React.Component {
         trip: trip
       }
     })
-
     this.props.history.push('/trips')
   }
 
   async componentDidMount(){
+    const user = this.props.user
     const id = this.props.match.params.id
-    const response = await axios.get(`${apiUrl}/trips/${id}`)
-    console.log(response)
+    const response = await axios({
+      method: 'get',
+      url: `${apiUrl}/trips/${id}`,
+      headers: {
+        'Authorization': `Token token=${user.token}`
+      }
+    })
     const trip = response.data.trip
     this.setState({
       trip: trip
@@ -77,10 +60,9 @@ class TripEdit extends React.Component {
   }
 
   render() {
-
     return (
       <React.Fragment>
-        <h1>Trip Edit</h1>
+        <h2>Trip Edit:</h2>
         <p>{this.state.flashMessage}</p>
         <form>
           <input type='text' onChange={this.handleChange} value={this.state.trip.location} name='location' placeholder='location'/>

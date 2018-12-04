@@ -70,17 +70,11 @@ class App extends Component {
           <Route exact path="/trips/new" render={()=>(
             <TripNew user={user} />
           )}/>
-          <Route exact path="/trips/create" render={()=>(
-            <TripCreate user={user} />
-          )} />
           <Route exact path="/trips/:id" render={()=>(
             <TripShow user={user} />
           )} />
           <Route exact path="/trips/:id/edit" render={()=>(
             <TripEdit user={user} />
-          )} />
-          <Route exact path="/trips/:id/update" render={()=>(
-            <TripUpdate user={user} />
           )} />
         </Switch>
       </React.Fragment>

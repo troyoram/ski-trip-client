@@ -46,3 +46,17 @@ $charcoal: #ccc;
     max-width: 200px;
   }
 }
+
+.bg {
+  // The image used
+  // background-image: url('./../public/john-price-377101-unsplash.jpg');
+  background-image: url('/Users/macbook33/wdi/projects/final-project/ski-trip-client/src/images/john-price-377101-unsplash.jpg');
+
+  // Center and scale the image
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  // Full height
+  height: 100%;
+}
