@@ -1,97 +1,203 @@
-[![General Assembly Logo](https://camo.githubusercontent.com/1a91b05b8f4d44b5bbfb83abac2b0996d8e26c92/687474703a2f2f692e696d6775722e636f6d2f6b6538555354712e706e67)](https://generalassemb.ly/education/web-development-immersive)
+# Ski Trip Planner - Capstone Project
 
-# react-auth-template
+The Ski Trip Planner application is the fourth project assigned to students
+in General Assembly's Web Development Immersive (WDI) Course.  The student is
+tasked with building a Single Page Application (SPA).  Users will be required
+to authenticate through sign-up, sign-in, change-password, and sign-out using
+a custom Application Programming Interface (API).  Once signed in, users can
+create, read, update, and delete planned ski trips in an SQL database with location, date, and equipment needed.
 
-A front-end framework template for starting projects with a recent version of
-either the [Rails API Template](https://git.generalassemb.ly/ga-wdi-boston/rails-api-template)
-or the [Express API Template](https://git.generalassemb.ly/ga-wdi-boston/express-api-template).
+The Ski Trip Client front-end-user-interface is deployed on gh-pages and was created from the react-auth-template-master.
+The following React components were created to allow all the necessary CRUD
+actions: TripIndex, TripShow, TripNew, and TripEdit. Although trip delete is
+supported within TripIndex, a seperate React component was not required.
 
-## Installation
+The Ski Trip Server back-end-api is deployed on heroku and was created from the rails-api-template-master.
+The following command was used to create the trip resource:
+```sh
+$ bin/rails generate scaffold trip location:string date:date equipment:string
+```
+null:false was added to the migration file to require entries for location,
+date, and equipment.
+The following command was executed to update schema:
+```sh
+$ bin/rails db:migrate
+```
+After the trip resource was created, the following command was used to create a
+one-to-many relationship between users and trips:
+```sh
+$ bin/rails generate migration AddUserToTrips user:references
+```
+As before, the following command was executed to update schema:
+```sh
+$ bin/rails db:migrate
+```
+Finally, the trip controller was changed to ProtectedController to only allow
+users to index, show, edit, and delete their own ski trips.
 
-1. [Download](../../archive/master.zip) this template.
-1. Unzip and rename the template directory (`unzip ~/Downloads/ember-auth-template-master.zip`).
-1. Move into the new project and `git init`.
-1. Empty [`README.md`](README.md) and fill with your own content.
-1. Replace `ga-wdi-boston.react-auth-template` in `package.json` with your
-   projects name.
-1. Replace the `"homepage"` field in `package.json` with your (public) Github
-   account name and repository name.
-1. Install dependencies with `npm install`.
-1. `git add` and `git commit` your changes.
-1. Run the development server with `npm start`.
+## Project Links
 
-## About
+[Requirements](https://git.generalassemb.ly/ga-wdi-boston/capstone-project/)
 
-This template is derived from GA Boston's [react-template](https://git.generalassemb.ly/ga-wdi-boston/react-template).
-Most of the development dependencies, such as linters, SCSS compiler, Webpack
-config, NPM scripts, etc in this repo come from there.
+[Ski Trip Client - Repo](https://github.com/troyoram/ski-trip-client/)
 
-It includes all the components and routes needed to sign up, sign in, change
-passwords, and sign out of an API built with either template linked above, with
-no need for modification.
+[Ski Trip Client - Deployed](https://troyoram.github.io/ski-trip-client/)
 
-**NOTE**: You should customize the included components to suit you app! They're
-provided as a guide and a bare minimum of functionality and style. Consider
-changing the provided SCSS styles, modifying the auth code, improving the flash
-messages, etc.
+[Ski Trip Server - Repo](https://github.com/troyoram/ski-trip-server/)
 
-## Structure
+[Ski Trip Server - Deployed](https://ski-trip-server.herokuapp.com/)
 
-Currently, the top-level `App` component stores the currently authenticated
-user in state, as well as data related to the flash messages. `App` renders the
-`Header` component, and a list of routes, each of which render a component from
-`src/auth/components`. The `auth` directory has two non-component files, `api`
-and `messages`, which contain all the needed `fetch` calls, and messages to
-display when API calls succeed or fail, respectively.
+## User Stories
 
-We recommend following this pattern in your app. For instance, if you are making
-an app that keeps track of books, you might want a `books` directory next to
-`auth`, which contains its own `api` and `messages` files, as well as a
-`components` directory.
+1.  As a user, I want to sign-up for an account with email and password
+1.  As a user, I want to sign-in with email and password
+1.  As a user, I want change password option after sign-in
+1.  As a user, I want to sign-out of application upon completion
+1.  As a user, I want to plan a ski trip on a chosen date
+1.  As a user, I want to plan a ski trip at a chosen location
+1.  As a user, I want to plan a ski trip with chosen equipment
 
-## Features
+## Tables and Columns
 
-### `<AuthenticatedRoute />`
+users: user_id, email, password
 
-This template contains a handy component for creating routes that require a
-user to be authenticated before visiting. This component lives in
-`src/auth/components/AuthenticatedRoute.js` and is already required in `App`.
-It's a thin wrapper around React Router's `<Route />` component. The only
-difference is that it expects a prop called `user`, and if that prop is falsy,
-it will render a `<Redirect />` that takes the user to `/`. **If you want to use
-it, you must pass it the currently authenticated as a prop!**
+trips: trip_id, location, date, user_id
 
-It supports both the `component=` and `render=` attributes, but like `<Route />`
-it will not forward props to the component if you use `component=`.
+## Entity Relationship Diagram (ERD)
 
-### Flash Messages
+![Entity Relationship Diagram](public/erd-skiTripPlanner.png)
 
-The `App` component has a rudimentary version of flash messages. To use it,
-pass `this.flash` into a subcomponent of `App` as a prop and call it from there.
-It expects two arguments: a message to display, and a message type, which is one
-of `'flash-success'`, `'flash-warning'`, and `'flash-error'` which make the
-message green, yellow, and red, respectively. You must pass one of these types.
-You can add more types by adding more CSS rules in `App.scss`.
+## Routing
 
-In the auth components, flash messages are used in conjunction with the
- `auth/messages` file to select from a list of predefined success/failure
- messages. To undertand how to do this, look at the definition of `flash` in
- `App.js`, the `signUp` method in `auth/components/SignUp.js`, and the
- `auth/messages.js` file.
+```sh
+$ bin/rails routes
+         Prefix Verb   URI Pattern                Controller#Action
+          trips GET    /trips(.:format)           trips#index
+                POST   /trips(.:format)           trips#create
+           trip GET    /trips/:id(.:format)       trips#show
+                PATCH  /trips/:id(.:format)       trips#update
+                PUT    /trips/:id(.:format)       trips#update
+                DELETE /trips/:id(.:format)       trips#destroy
+       examples GET    /examples(.:format)        examples#index
+                POST   /examples(.:format)        examples#create
+        example GET    /examples/:id(.:format)    examples#show
+                PATCH  /examples/:id(.:format)    examples#update
+                PUT    /examples/:id(.:format)    examples#update
+                DELETE /examples/:id(.:format)    examples#destroy
+        sign_up POST   /sign-up(.:format)         users#signup
+        sign_in POST   /sign-in(.:format)         users#signin
+       sign_out DELETE /sign-out(.:format)        users#signout
+change_password PATCH  /change-password(.:format) users#changepw
+```
 
- To change the duration of the message, replace `2000` with a value of your
- choice (in milliseconds) in the `flash` method definition in `App.js`.
+## Wireframes
 
- ### `src/apiConfig.js`
+![Wireframe 1](public/wireframe1-skiTripPlanner.png)
+![Wireframe 2](public/wireframe2-skiTripPlanner.png)
 
- Just like in
-[browser-template](https://git.generalassemb.ly/ga-wdi-boston/browser-template),
-this file will determine whether you're in a production or development
-environment and choose an API URL accordingly. Don't forget to replace the
-`production` URL with your deployed API's URL.
+## Technologies Used
 
-## [License](LICENSE)
+1.  *Browser:* Google Chrome with DevTools
+1.  *Editor:* Atom
+1.  *Client-side tools:* React, HTML, CSS, Javascript, Axios, JSON, bootstrap, Node Package Manager, curl-scripts
+1.  *Server-side tools:* Ruby, Rails, JSON, curl-scripts
 
-1.  All content is licensed under a CC­BY­NC­SA 4.0 license.
-1.  All software code is licensed under GNU GPLv3. For commercial use or
-    alternative licensing, please contact legal@ga.co.
+## Schedule
+
+### November 30, 2018
+### Planning
+1.  [ ] Review [project-scope-study](https://git.generalassemb.ly/ga-wdi-boston/game-project-scope-study)
+1.  [ ] Create User Stories
+1.  [ ] Review [project-planning-wireframes-practice](https://git.generalassemb.ly/ga-wdi-boston/project-planning-wireframes-practice)
+1.  [ ] Create Wire Frames
+1.  [ ] Review [project-modeling-lab](https://git.generalassemb.ly/ga-wdi-boston/full-stack-project-modeling-lab)
+1.  [ ] Create ERD
+
+### December 1, 2018
+### Set Up
+
+API
+
+1.  [ ] [Download Express API Template](https://git.generalassemb.ly/ga-wdi-boston/express-api-template) or [Download Rails API Template](https://git.generalassemb.ly/ga-wdi-boston/rails-api-template)
+1.  [ ] Create a Github Repository
+1.  [ ] [Deploy to Heroku with Express](https://git.generalassemb.ly/ga-wdi-boston/express-api-deployment-guide) or [Deploy to Heroku with Rails](https://git.generalassemb.ly/ga-wdi-boston/rails-heroku-setup-guide)
+
+Client
+
+1.  [ ] [Download Browser Template](https://git.generalassemb.ly/ga-wdi-boston/browser-template) or [Download React Auth Template](https://git.generalassemb.ly/ga-wdi-boston/react-auth-template)
+1.  [ ] Create a Github Repository
+1.  [ ] [Deploy to Github Pages with Browser Template](https://git.generalassemb.ly/ga-wdi-boston/gh-pages-deployment-guide) or [Deploy to Github Pages with React Template](https://git.generalassemb.ly/ga-wdi-boston/react-template)
+
+### December 2, 2018
+### API
+1.  [ ] Review [express-api](https://git.generalassemb.ly/ga-wdi-boston/express-api) or [rails-api](https://git.generalassemb.ly/ga-wdi-boston/rails-api)
+1.  [ ] Create your resource and end points
+1.  [ ] Test your resource's end points with curl scripts
+1.  [ ] Add the relationship to a User
+1.  [ ] Add User ownership to resource controller
+
+### December 3-5, 2018
+### Client
+1.  [ ] Review [api-token-auth](https://git.generalassemb.ly/ga-wdi-boston/api-token-auth) or [react-auth](https://git.generalassemb.ly/ga-wdi-boston/react-auth-template)
+1.  [ ] Sign Up (curl then web app)
+1.  [ ] Sign In (curl then web app)
+1.  [ ] Change Password (curl then web app)
+1.  [ ] Sign Out (curl then web page)
+1.  [ ] All API calls have success or failure messages
+1.  [ ] Review [query-ajax-post](https://github.com/ga-wdi-boston/jquery-ajax-post) or [react-resources](https://git.generalassemb.ly/ga-wdi-boston/react-template)
+1.  [ ] Create resource (curl then web app)
+1.  [ ] Get all of their owned resources (curl then web app)
+1.  [ ] Delete single resource (curl then web app)
+1.  [ ] Update single resource (curl then web app)
+
+### December 6, 2018
+### Final Touches
+1.  [ ] README
+2.  [ ] Troubleshoot/Debug
+3.  [ ] Style
+
+### December 7, 2018
+### Project Completion
+1.  [ ] Presentation
+
+## Problem Resolution
+
+As problems with design and development were encountered, a new issued was created
+and addressed through General Assembly's Capstone Project [Issue Queue](https://git.generalassemb.ly/ga-wdi-boston/capstone-project/issues)
+
+## Unsolved problems to be fixed in future releases
+
+1.  If time permits, I would like to add a feature where Google Maps API is used for displaying the location of each skiing destination.
+2.  If time permits, I would like to add a feature where a weather API is used for displaying the current weather conditions of each skiing location.
+
+## Testing
+
+There were no requirements for developing automated tests for this project.  As
+a result, no automated tests exist for the Full-Stack project.
+
+### Coding style tests
+
+Linter for Atom was used to enforce coding style
+
+## Deployment
+
+'npm run deploy' was used to deploy the React front-end client to github pages
+The back-end api is deployed on heroku.
+
+## Built With
+
+React components are implemented on the client-side of this project.
+Ruby on Rails framework was used for the server-side of this project. No
+dependency management or RSS feeds were used for this project
+
+## Versioning
+
+'git commit' and 'git push' were used for versioning. For the versions available,
+see the Project Links above.
+
+## Authors
+
+*   **Troy Oram** - *Initial work*
+
+## Acknowledgments
+N/A
