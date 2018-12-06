@@ -5,7 +5,7 @@ in General Assembly's Web Development Immersive (WDI) Course.  The student is
 tasked with building a Single Page Application (SPA).  Users will be required
 to authenticate through sign-up, sign-in, change-password, and sign-out using
 a custom Application Programming Interface (API).  Once signed in, users can
-create, read, update, and delete planned ski trips in an SQL database with location, date, and equipment needed.
+create, read, update, and delete planned ski trips in a PostgreSQL database with location, date, and equipment needed.
 
 The Ski Trip Client front-end-user-interface is deployed on gh-pages and was created from the react-auth-template-master.
 The following React components were created to allow all the necessary CRUD
