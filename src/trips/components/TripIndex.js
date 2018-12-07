@@ -64,7 +64,7 @@ class TripIndex extends React.Component {
     return (
       <React.Fragment>
         <h2>Trip Index:</h2>
-        <Link to="/trips/new">Add a Trip</Link>
+        <Link to="/trips/new"><h3>Add a Trip</h3></Link>
         <Table striped bordered hover>
           <thead>
             <tr>

@@ -1,0 +1,13 @@
+$font-color: #81ee77;
+$white: #fff;
+
+.box {
+  align-items: center;
+  border: 1px solid $white;
+  // color: $font-color;
+  display: flex;
+  // font-family: fantasy;
+  font-size: 20px;
+  height: 80px;
+  justify-content: center;
+}

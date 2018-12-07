@@ -60,14 +60,14 @@ class TripShow extends React.Component {
         country: undefined,
         humidity: undefined,
         description: undefined,
-        error: 'Please make sure your inputs are valid',
+        error: 'Please enter valid city and country names',
         min_temperature: undefined,
         max_temperature: undefined,
         icon: null,
         wind: undefined
       })
     } else if (city && country) {
-      console.log(data)
+      // console.log(data)
       this.setState({
         temperature: data.main.temp,
         city: data.name,
@@ -83,7 +83,7 @@ class TripShow extends React.Component {
         country: undefined,
         humidity: undefined,
         description: undefined,
-        error: 'Please enter valid city and country values'
+        error: 'Please enter valid city and country names'
       })
     }
   }
@@ -91,7 +91,7 @@ class TripShow extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <h2>Trip:</h2>
+        <h2>Selected Trip:</h2>
         <Table striped bordered condensed hover>
           <thead>
             <tr>
@@ -110,6 +110,7 @@ class TripShow extends React.Component {
             </tr>
           </tbody>
         </Table>
+        <h2>Enter the nearest city and country to get current weather</h2>
         <WeatherForm getWeather={this.getWeather} />
         <Weather
           temperature={this.state.temperature}
