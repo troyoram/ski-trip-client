@@ -10,7 +10,10 @@ create, read, update, and delete planned ski trips in a PostgreSQL database with
 The Ski Trip Client front-end-user-interface is deployed on gh-pages and was created from the react-auth-template-master.
 The following React components were created to allow all the necessary CRUD
 actions: TripIndex, TripShow, TripNew, and TripEdit. Although trip delete is
-supported within TripIndex, a seperate React component was not required.
+supported within TripIndex, a seperate React component was not required.  Two
+additional components, WeatherForm and Weather, were created to interface with
+OpenWeatherMap API within the TripShow view that will retrun the current
+weather conditions at or near the skiing destination.
 
 The Ski Trip Server back-end-api is deployed on heroku and was created from the rails-api-template-master.
 The following command was used to create the trip resource:
